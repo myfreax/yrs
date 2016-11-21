@@ -1,14 +1,14 @@
 {
   "only": "*.js",
   "env": {
-    "pre-node5": {
+    "production": {
       "presets": ["es2015-node4"],
       "plugins": [
         ["transform-inline-imports-commonjs"],
         ["transform-runtime", { "polyfill": true, "regenerator": false }]
       ]
     },
-    "test": {
+    "development": {
       "presets": ["es2015-node4"],
       "plugins": [
         ["transform-inline-imports-commonjs"]
