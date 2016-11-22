@@ -2,10 +2,10 @@
 >Yarn registry switch tool
 
 ##TODO
-- [ ] build Development environment
+- [x] build Development environment
     - [x] Eslint
-    - [ ] Babel
-    - [ ] Gulp
+    - [x] Babel
+    - [x] Gulp
     - [ ] Jest
 - [ ] Thinking about the overall structure of the program
      - [ ] Package
