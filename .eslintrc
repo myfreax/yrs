@@ -1,6 +1,7 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "jest": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
@@ -9,6 +10,7 @@
       "impliedStrict":true
     }
   },
+  "parser": "babel-eslint",
   "extends": "eslint:recommended",
   "rules": {
     "no-undef":0,
@@ -19,7 +21,6 @@
     "no-constant-condition":2,
     "no-unsafe-negation":2,
     "no-template-curly-in-string":2,
-    "arrow-body-style":2,
     "no-extra-parens":2,
     "accessor-pairs":2,
     "array-callback-return":2,
