@@ -6,7 +6,7 @@
     - [x] Eslint
     - [x] Babel
     - [x] Gulp
-    - [ ] Jest
+    - [x] Jest
 - [ ] Thinking about the overall structure of the program
      - [ ] Package
         - commander
@@ -15,5 +15,3 @@
 
 ##status 
 in development.....
-
-
