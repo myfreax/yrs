@@ -6,6 +6,13 @@
   "repository": "git@github.com:huangyanxiong01/yrs.git",
   "author": "Freax <huangyanxiong2013@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment":"node",
+    "verbose": true
+  },
   "dependencies": {
     "commander": "^2.9.0"
   },
@@ -21,6 +28,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-newer": "^1.3.0",
     "gulp-plumber": "^1.1.0",
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.7",
+    "jest": "^17.0.3"
   }
 }
