@@ -11,6 +11,7 @@
   },
   "extends": "eslint:recommended",
   "rules": {
+    "no-undef":0,
     "no-unused-vars":0,
     "no-unused-labels":0,
     "no-console":0,
@@ -26,7 +27,6 @@
     "block-scoped-var":2,
     "consistent-return":2,
     "default-case":1,
-    "callback-return":1,
-    "no-sync":2
+    "callback-return":1
   }
 }
