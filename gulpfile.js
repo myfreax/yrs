@@ -12,8 +12,8 @@ const fs = require('fs');
 const path = require('path');
 
 const babelRc = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc'), 'utf8'));
-const SRC = 'src/*.js';
-const DST = 'dist/*.js';
+const SRC = 'src/**/*.js';
+const DST = 'dist/**/*.js';
 
 gulp.task('build', ()=> {
     gulp.src(SRC)
