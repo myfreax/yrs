@@ -21,7 +21,6 @@
     "no-template-curly-in-string":2,
     "arrow-body-style":2,
     "no-extra-parens":2,
-    "valid-jsdoc":2,
     "accessor-pairs":2,
     "array-callback-return":2,
     "block-scoped-var":2,
