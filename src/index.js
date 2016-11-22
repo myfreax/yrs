@@ -31,7 +31,7 @@ program
             console.log(err.stack);
         });
 
-        currentRegistry = currentRegistry.toString().replace(/\n/, '');
+        currentRegistry = currentRegistry.toString().replace(/\s/, '');
 
         if (currentRegistry === 'undefined' || !currentRegistry) {
             return new Grid(terminalConfig).draw();
