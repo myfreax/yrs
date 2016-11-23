@@ -75,7 +75,7 @@ program
 
         options = options.toString().trim();
 
-        if (!/http:\/\/[a-z]+\.[a-z\d]+\.[a-z]+/i.test(options)) {
+        if (!/^http|https:\/\/[a-z]+\.[a-z\d]+\.[a-z]+$/i.test(options)) {
             console.info(`incorrect registry ${options}`);
             return true;
         }
