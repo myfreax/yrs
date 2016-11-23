@@ -7,7 +7,7 @@
     - [x] Babel
     - [x] Gulp
     - [x] Jest
-    - [ ] Flow
+    - [x] Flow
 - [ ] Thinking about the overall structure of the program
      - [ ] Package
         - commander
