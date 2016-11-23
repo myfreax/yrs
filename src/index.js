@@ -22,7 +22,7 @@ program
     .action(async() => {
         let registry = await  run('yarn config get registry');
 
-        registry = registry.toString().replace(/\s/, '');
+        registry = registry.toString().trim();
 
         if (registry === 'undefined' || !registry) {
             drawGrid();
