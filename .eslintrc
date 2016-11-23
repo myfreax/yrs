@@ -7,26 +7,33 @@
     "ecmaVersion": 7,
     "sourceType": "module",
     "ecmaFeatures": {
-      "impliedStrict":true
+      "impliedStrict": true
     }
   },
+  "plugins": [
+    "flowtype",
+    "no-async-without-await"
+  ],
   "parser": "babel-eslint",
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:flowtype/recommended"
+  ],
   "rules": {
-    "no-undef":0,
-    "no-unused-vars":0,
-    "no-unused-labels":0,
-    "no-console":0,
-    "no-cond-assign":2,
-    "no-constant-condition":2,
-    "no-unsafe-negation":2,
-    "no-template-curly-in-string":2,
-    "no-extra-parens":2,
-    "accessor-pairs":2,
-    "array-callback-return":2,
-    "block-scoped-var":2,
-    "consistent-return":2,
-    "default-case":1,
-    "callback-return":1
+    "no-undef": 0,
+    "no-unused-vars": 0,
+    "no-unused-labels": 0,
+    "no-console": 0,
+    "no-cond-assign": 2,
+    "no-constant-condition": 2,
+    "no-unsafe-negation": 2,
+    "no-template-curly-in-string": 2,
+    "no-extra-parens": 2,
+    "accessor-pairs": 2,
+    "array-callback-return": 2,
+    "block-scoped-var": 2,
+    "consistent-return": 2,
+    "default-case": 1,
+    "callback-return": 1
   }
 }
