@@ -7,8 +7,7 @@
 
 import registries from './config/registryies'
 import program from 'commander'
-import {exec} from 'child_process'
-import {drawGrid} from './common'
+import {drawGrid,run} from './common'
 
 
 program
@@ -19,18 +18,7 @@ program
     .command('current')
     .description('Show current registry name')
     .action(async() => {
-        let currentRegistry = await  new Promise((resolve, reject) => {
-            exec('yarn config get registry', (error, stdout) => {
-                if (error) {
-                    reject(error);
-                    return;
-                }
-                resolve(stdout);
-            });
-        }).catch((err) => {
-            console.log(err.stack);
-        });
-
+        let currentRegistry = await  run('yarn config get registry');
         currentRegistry = currentRegistry.toString().replace(/\s/, '');
 
         if (currentRegistry === 'undefined' || !currentRegistry) {
@@ -41,11 +29,8 @@ program
             return value.registry === currentRegistry;
         });
 
-
         drawGrid(currentRegistries);
-
-        return '';
-
+        return true;
     });
 
 program
@@ -59,8 +44,10 @@ program
 program
     .command('use <registryName>')
     .description('Change registry to registry')
-    .action((env, options)=> {
+    .action(async(env, options)=> {
         //设置
+        let result = await run(`yarn config set registry  https://registry.npmjs.org`);
+
     });
 
 program
