@@ -8,10 +8,13 @@
     - [x] Gulp
     - [x] Jest
     - [x] Flow
-- [ ] Thinking about the overall structure of the program
-     - [ ] Package
+- [x] Thinking about the overall structure of the program
+     - [x] Package
         - commander
         - term-grid
+        - tosource
+     - [x] Code
+        - [ ] optimization
 - [ ] Write the test
 - [ ] Packaged distribution
 
