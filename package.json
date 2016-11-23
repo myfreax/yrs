@@ -16,7 +16,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "term-grid": "^0.1.8",
-    "termtable": "^1.0.2"
+    "tosource": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
