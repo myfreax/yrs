@@ -35,6 +35,6 @@ export let run = (command) => {
     });
 };
 
-export let filterRegister = ()=>{
-
+export let filterRegister = (condition)=>{
+    //todo Filter by condition
 };
