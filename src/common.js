@@ -7,6 +7,8 @@ import * as keys from './config/keys'
 import Grid from 'term-grid'
 import {writeFile} from 'fs'
 import {exec} from 'child_process'
+import appConfig from './config/app'
+
 
 
 export let drawGrid = (registries: Array<*> = []): boolean => {
@@ -37,14 +39,14 @@ export let run = (command: string): Promise<*> =>  {
     });
 };
 
-export let filterRegister = (registries: Array<Object>,condition: any): Array<Object> => {
+export let registerFilter = (registries: Array<Object>,condition: any): Array<Object> => {
     let registry = registries.filter(value => {
         return condition(value);
     });
     return registry;
 };
 
-export let  writeFilePromise = (path: string, content: string): Promise<*> =>   {
+export let  writeFilePromise = (content: string, path: string = appConfig.savePath): Promise<*> =>   {
     return new Promise((resolve, reject) => {
         writeFile(path,`export default ${content}`,'utf8',(err,data) => {
             if (err){
@@ -57,4 +59,8 @@ export let  writeFilePromise = (path: string, content: string): Promise<*> =>   
     }).then(() =>{
         return true;
     })
+};
+
+export let trim = (str: string): string => {
+    return str.toString().trim();
 };
