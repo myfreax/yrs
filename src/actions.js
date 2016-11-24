@@ -3,12 +3,10 @@
  * Created by Freax on 16-11-24.
  * @Blog http://www.myfreax.com/
  */
-import {drawGrid, run, registerFilter, writeFilePromise, trim, getRegistries} from './unit'
+import {drawGrid, run, registerFilter, writeFilePromise, trim} from './unit'
 import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
-
 let  registries = require('./registries.json');
-
 
 
 export let current = async() => {
