@@ -7,9 +7,9 @@
 
 import registries from './config/registries'
 import program from 'commander'
-import {drawGrid, run, filterRegister, writeFilePromise} from './common'
+import {drawGrid, run, registerFilter, writeFilePromise, trim} from './common'
 import {NAME, HOME, REGISTRY} from './config/keys'
-import tosource from 'tosource'
+import toSource from 'tosource'
 
 
 program
@@ -20,16 +20,17 @@ program
     .command('current')
     .description('Show current registry name')
     .action(async() => {
-        let registry = await  run('yarn config get registry');
 
-        registry = registry.toString().trim();
+        let currentRegistry = await run('yarn config get registry');
 
-        if (registry === 'undefined' || !registry) {
+        currentRegistry = trim(currentRegistry);
+
+        if (currentRegistry === 'undefined' || !currentRegistry) {
             drawGrid();
         }
 
-        let currentRegistries = filterRegister(registries, function (value) {
-            return value.registry === registry;
+        let currentRegistries = registerFilter(registries, registry => {
+            return trim(registry[REGISTRY]) === currentRegistry;
         });
 
         drawGrid(currentRegistries);
@@ -50,8 +51,8 @@ program
     .description('Change registry to registry')
     .action(async(env, options) => {
 
-        let registry = filterRegister(registries, function (registry) {
-            return registry.name.toString().trim() === env.toString().trim();
+        let registry = registerFilter(registries, registry => {
+            return trim(registry.name) === trim(env);
         });
 
         if (registry.length === 0) {
@@ -59,8 +60,8 @@ program
             return true;
         }
 
-        let result = await run(`yarn config set registry  ${registry[0][REGISTRY]}`);
-        console.info(result);
+        await run(`yarn config set registry  ${registry[0][REGISTRY]}`);
+
         return true;
     });
 
@@ -69,17 +70,16 @@ program
     .description('Add one custom registry')
     .action(async(env, options) => {
 
-        let registry = filterRegister(registries, function (registry) {
-            return registry.name.toString().trim() === env.toString().trim();
+        let registry = registerFilter(registries, registry => {
+            return trim(registry.name) === trim(env);
         });
 
-        options = options.toString().trim();
+        options = trim(options);
 
         if (!/^http|https:\/\/[a-z]+\.[a-z\d]+\.[a-z]+$/i.test(options)) {
-            console.info(`incorrect registry ${options}`);
+            console.info(`Incorrect registry ${options}`);
             return true;
         }
-
 
         if (registry.length !== 0) {
             console.info(`The registryName ${env} already exists`);
@@ -91,9 +91,7 @@ program
         temp[REGISTRY] = options;
         registries.push(temp);
 
-
-        let result = await writeFilePromise('config/registries.js', tosource(registries));
-        console.info(tosource(result));
+        await writeFilePromise(toSource(registries));
 
         return true;
     });
@@ -103,25 +101,18 @@ program
     .description('Delete one custom registry')
     .action(async(env) => {
 
-        console.info(registries);
-        let registry = filterRegister(registries, function (registry) {
-            return registry.name.toString().trim() === env.toString().trim();
+        let registry = registerFilter(registries, registry => {
+            return trim(registry.name) === trim(env);
         });
 
-        if (registry.length  === 0){
+        if (registry.length === 0) {
             console.info(`The registryName ${env} is not exists`);
             return true;
         }
 
-        registries.splice(registries.indexOf(registry[0],1));
+        registries.splice(registries.indexOf(registry[0], 1));
 
-
-        console.info(registries);
-
-        let result = await writeFilePromise('config/registries.js', tosource(registries));
-
-        console.info(tosource(result));
-        console.info(tosource(result));
+        await writeFilePromise(toSource(registries));
 
         return true;
     });
