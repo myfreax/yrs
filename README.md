@@ -14,7 +14,7 @@
         - term-grid
         - tosource
      - [x] Code
-        - [ ] optimization
+        - [x] optimization
 - [ ] Write the test
 - [ ] Packaged distribution
 
