@@ -32,7 +32,7 @@
     "accessor-pairs": 2,
     "array-callback-return": 2,
     "block-scoped-var": 2,
-    "consistent-return": 2,
+    "consistent-return": 1,
     "default-case": 1,
     "callback-return": 1
   }
