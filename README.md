@@ -12,7 +12,6 @@
      - [x] Package
         - commander
         - term-grid
-        - tosource
      - [x] Code
         - [x] optimization
 - [ ] Write the test
