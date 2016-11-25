@@ -20,7 +20,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @Blog http://www.myfreax.com/
  */
 
-(_commander || _load_commander()).default.version('0.0.1');
+const pkg = require('./package.json');
+
+(_commander || _load_commander()).default.version(pkg.version);
 
 (_commander || _load_commander()).default.command('current').description('Show current registry name').action((_actions || _load_actions()).current);
 
@@ -33,3 +35,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (_commander || _load_commander()).default.command('del <registryName>').description('Delete one custom registry').action((_actions || _load_actions()).del);
 
 (_commander || _load_commander()).default.parse(process.argv);
+
+if (process.argv.length === 2) {
+    (_commander || _load_commander()).default.outputHelp();
+}
