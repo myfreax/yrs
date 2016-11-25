@@ -3,7 +3,7 @@
  * Created by Freax on 16-11-24.
  * @Blog http://www.myfreax.com/
  */
-import {drawGrid, run, registerFilter, writeFilePromise, trim} from './unit'
+import {drawGrid, run, registerFilter, writeFilePromise, trim,isUrl} from './unit'
 import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
 let  registries = require('./registries.json');
@@ -11,11 +11,11 @@ let  registries = require('./registries.json');
 
 export let current = async() => {
 
-    let currentRegistry: string = await run(api.current);
+    let currentRegistry:string = await run(api.current);
 
     currentRegistry = trim(currentRegistry);
 
-    if (currentRegistry === 'undefined' || !currentRegistry) {
+    if (!isUrl(currentRegistry)) {
         drawGrid();
     }
 
@@ -61,19 +61,19 @@ export let add = async(registryName: string, url: string, home: string) => {
     });
 
 
-    if (!/^http|https:\/\/[a-z]+\.[a-z\d]+\.[a-z]+$/i.test(url)) {
+    if (!isUrl(url)) {
         console.info(`Incorrect registry ${url}`);
-        return true;
+        return false;
     }
 
     if (urls.length !== 0) {
         console.info(`The registryUrl ${url} already exists`);
-        return true;
+        return false;
     }
 
     if (registry.length !== 0) {
         console.info(`The registryName ${registryName} already exists`);
-        return true;
+        return false;
     }
 
     let temp = {};
@@ -82,12 +82,20 @@ export let add = async(registryName: string, url: string, home: string) => {
     temp[HOME] = home;
     registries.push(temp);
 
-    await writeFilePromise(registries);
+    let result = await writeFilePromise(registries);
+    if (result){
+        ls();
+        return true;
+    }else{
+        console.info('Failed to add registry');
+        ls();
+    }
 
     return true;
 };
 
 export let del = async(registryName: string) => {
+
 
     let registry = registerFilter(registries, registry => {
         return trim(registry.name) === trim(registryName);
@@ -113,7 +121,13 @@ export let del = async(registryName: string) => {
 
     registries.splice(registries.indexOf(registry[0], 1));
 
-    await writeFilePromise(registries);
+    let result = await writeFilePromise(registries);
+
+    if (result){
+        ls();
+    }else{
+        console.info('Failed to del registry!!');
+    }
 
     return true;
 };
