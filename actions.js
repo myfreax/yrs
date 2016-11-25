@@ -50,6 +50,7 @@ let current = exports.current = (() => {
 
         if (!(0, (_unit || _load_unit()).isUrl)(currentRegistry)) {
             (0, (_unit || _load_unit()).drawGrid)();
+            return false;
         }
 
         let currentRegistries = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
@@ -129,7 +130,11 @@ let add = exports.add = (() => {
             return false;
         }
 
-        let temp = {};temp[(_keys || _load_keys()).NAME] = registryName;temp[(_keys || _load_keys()).REGISTRY] = url;temp[(_keys || _load_keys()).HOME] = home;customRegistries.unshift(temp);
+        let temp = {};
+        temp[(_keys || _load_keys()).NAME] = registryName;
+        temp[(_keys || _load_keys()).REGISTRY] = url;
+        temp[(_keys || _load_keys()).HOME] = home;
+        customRegistries.unshift(temp);
 
         let result = yield (0, (_unit || _load_unit()).setCustomRegistry)(customRegistries);
 
@@ -155,22 +160,20 @@ let del = exports.del = (() => {
 
         let customRegistries = yield (0, (_unit || _load_unit()).getCustomRegistries)();
 
-        let registry = customRegistries.filter(function (registry) {
-            return (0, (_unit || _load_unit()).trim)(registry.name) === registryName;
-        });
-
-        if (registry.length === 0) {
-            (0, (_unit || _load_unit()).printMsg)(`The registryName <${ registryName }> is not exists`);
-            return true;
-        }
-
         let currentRegistry = yield (0, (_unit || _load_unit()).run)((_api || _load_api()).default.current);
 
         currentRegistry = (0, (_unit || _load_unit()).trim)(currentRegistry);
 
         let currentRegistries = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === currentRegistry;
-        });
+        }, false);
+
+        if (currentRegistries.length === 0) {
+
+            (0, (_unit || _load_unit()).printMsg)(`Delete registry <${ registryName }> failed`);
+
+            return false;
+        }
 
         if (currentRegistries.length !== 0 && (0, (_unit || _load_unit()).trim)(currentRegistries[0][(_keys || _load_keys()).NAME]) === registryName) {
             (0, (_unit || _load_unit()).printMsg)(`Registry <${ currentRegistry }> is in use, switch other registry can be deleted`);

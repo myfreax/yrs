@@ -17,6 +17,7 @@ export let current = async() => {
 
     if (!isUrl(currentRegistry)) {
         drawGrid();
+        return false;
     }
 
     let currentRegistries: Array<Object> = await registryFilter(registry => {
@@ -78,7 +79,11 @@ export let add = async(registryName: string, url: string, home: string) => {
         return false;
     }
 
-    let temp = {};temp[NAME] = registryName;temp[REGISTRY] = url;temp[HOME] = home;customRegistries.unshift(temp);
+    let temp = {};
+    temp[NAME] = registryName;
+    temp[REGISTRY] = url;
+    temp[HOME] = home;
+    customRegistries.unshift(temp);
 
     let result: boolean = await setCustomRegistry(customRegistries);
 
@@ -98,15 +103,6 @@ export let del = async(registryName: string) => {
 
     let customRegistries: Array<Object> = await getCustomRegistries();
 
-    let registry: Array<Object> = customRegistries.filter((registry)=>{
-        return trim(registry.name) === registryName;
-    });
-
-
-    if (registry.length === 0) {
-        printMsg(`The registryName <${registryName}> is not exists`);
-        return true;
-    }
 
     let currentRegistry: string = await run(api.current);
 
@@ -114,14 +110,23 @@ export let del = async(registryName: string) => {
 
     let currentRegistries: Array<Object> = await registryFilter(registry => {
         return trim(registry[REGISTRY]) === currentRegistry;
-    });
+    }, false);
+
+    if (currentRegistries.length === 0) {
+
+        printMsg(`Delete registry <${registryName}> failed`);
+
+        return false;
+    }
 
     if (currentRegistries.length !== 0 && trim(currentRegistries[0][NAME]) === registryName) {
         printMsg(`Registry <${currentRegistry}> is in use, switch other registry can be deleted`);
         return true;
     }
 
-    customRegistries.splice(findIndex(customRegistries, registry =>  { return registry[NAME] == registryName}), 1);
+    customRegistries.splice(findIndex(customRegistries, registry => {
+        return registry[NAME] == registryName
+    }), 1);
 
     let result: boolean = await setCustomRegistry(customRegistries);
 

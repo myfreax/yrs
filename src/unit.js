@@ -100,11 +100,21 @@ export let getCustomRegistries = (path: string = savePath): Promise<*> => {
     });
 };
 
-export let registryFilter = async(condition: any) => {
-    let customRegistries: Array<Object> = await getCustomRegistries();
-    return customRegistries.concat(registries).filter(value => {
+export let registryFilter = async(condition: any, all: boolean = true) => {
+
+    let customRegistries: Array<Object> = [];
+
+    customRegistries = await getCustomRegistries();
+
+
+    if (all) {
+        customRegistries = customRegistries.concat(registries);
+    }
+
+    return customRegistries.filter(value => {
         return condition(value);
     });
+
 };
 
 export let isUrl = (str: string): boolean => {

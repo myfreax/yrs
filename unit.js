@@ -154,13 +154,23 @@ let getCustomRegistries = exports.getCustomRegistries = function getCustomRegist
 
 let registryFilter = exports.registryFilter = (() => {
     var _ref = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (condition) {
-        let customRegistries = yield getCustomRegistries();
-        return customRegistries.concat(registries).filter(function (value) {
+        let all = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+
+        let customRegistries = [];
+
+        customRegistries = yield getCustomRegistries();
+
+        if (all) {
+            customRegistries = customRegistries.concat(registries);
+        }
+
+        return customRegistries.filter(function (value) {
             return condition(value);
         });
     });
 
-    return function registryFilter(_x4) {
+    return function registryFilter(_x5) {
         return _ref.apply(this, arguments);
     };
 })();
