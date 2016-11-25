@@ -1,12 +1,14 @@
 # yrs
 >Yarn registry switch tool
 
-##Features
+## Features
 Compatible with Node.js 4.0 or higher
 
-##Requirements
+## Requirements
+
 - [Yarn](https://yarnpkg.com)
-##Install
+
+## Install
 
 ```
 yarn global add yrs
@@ -17,7 +19,7 @@ OR
  npm install -g yrs
 ```
 
-##Example
+## Example
 ```
 yrs ls
 
@@ -42,7 +44,8 @@ Done in 0.03s.
 ```
 
 
-##Usage
+## Usage
+
 ```
 
   Usage: yrs [options] [command]
@@ -64,18 +67,19 @@ Done in 0.03s.
 
 
 ```
-##Contributing
+## Contributing
 
-####Registry
+#### Registry
 
 - Add registry to registeries.json
 
-####TODO
+#### TODO
+
 - [ ] Test
 - [ ] travis CI
 
 
-####Development environment
+#### Development environment
    - [Eslint](http://eslint.org/)
    - [Babel](http://babeljs.io/)
    - [Gulp](http://gulpjs.com/)
