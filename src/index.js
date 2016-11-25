@@ -42,6 +42,7 @@ program
 
 program
     .command('*')
+    .description('Any')
     .action(function(command){
        printMsg(`Error: command ${command} not found`);
     });
@@ -49,6 +50,5 @@ program
 
 program.parse(process.argv);
 
-if (process.argv.length === 2) {
-    program.outputHelp();
-}
+
+if (!program.args.length) program.help();
