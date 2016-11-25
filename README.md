@@ -58,7 +58,7 @@ Done in 0.03s.
     use <registryName>               Change registry to registry
     add <registryName> <url> [home]  Add one custom registry
     del <registryName>               Delete one custom registry
-    *                              
+    *                                Any
 
   Options:
 
