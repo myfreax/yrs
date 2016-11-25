@@ -39,12 +39,10 @@ const pkg = require('./package.json');
 
 (_commander || _load_commander()).default.command('del <registryName>').description('Delete one custom registry').action((_actions || _load_actions()).del);
 
-(_commander || _load_commander()).default.command('*').action(function (command) {
+(_commander || _load_commander()).default.command('*').description('Any').action(function (command) {
     (0, (_unit || _load_unit()).printMsg)(`Error: command ${ command } not found`);
 });
 
 (_commander || _load_commander()).default.parse(process.argv);
 
-if (process.argv.length === 2) {
-    (_commander || _load_commander()).default.outputHelp();
-}
+if (!(_commander || _load_commander()).default.args.length) (_commander || _load_commander()).default.help();
