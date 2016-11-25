@@ -1,6 +1,6 @@
 {
   "name": "yrs",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Yarn registry switch tool",
   "keywords": [
     "yarn",
@@ -14,12 +14,13 @@
   },
   "bin": "./index.js",
   "files": [
+    "src/",
     "index.js",
     "actions.js",
-    "index.js",
     "package.json",
     "registries.json",
-    "config/*.js"
+    "config/*.js",
+    "unit.js"
   ],
   "jest": {
     "testEnvironment": "node",
