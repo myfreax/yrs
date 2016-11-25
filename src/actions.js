@@ -6,6 +6,7 @@
 import {drawGrid, run, registerFilter, setCustomRegistry, getCustomRegistries, trim, isUrl, printMsg} from './unit'
 import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
+import {findIndex} from 'lodash'
 
 
 export let current = async() => {
@@ -93,10 +94,12 @@ export let add = async(registryName: string, url: string, home: string) => {
 
 export let del = async(registryName: string) => {
 
+    registryName = trim(registryName);
+
     let customRegistries: Array<Object> = await getCustomRegistries();
 
     let registry: Array<Object> = customRegistries.filter((registry)=>{
-        return trim(registry.name) === trim(registryName);
+        return trim(registry.name) === registryName;
     });
 
 
@@ -118,7 +121,7 @@ export let del = async(registryName: string) => {
         return true;
     }
 
-    customRegistries.splice(customRegistries.indexOf(registry[0], 1));
+    customRegistries.splice(findIndex(customRegistries, registry =>  { return registry[NAME] == registryName}), 1);
 
     let result: boolean = await setCustomRegistry(customRegistries);
 

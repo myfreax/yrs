@@ -29,8 +29,18 @@ function _load_api() {
     return _api = _interopRequireDefault(require('./config/api'));
 }
 
+var _lodash;
+
+function _load_lodash() {
+    return _lodash = require('lodash');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Created by Freax on 16-11-24.
+ * @Blog http://www.myfreax.com/
+ */
 let current = exports.current = (() => {
     var _ref = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* () {
 
@@ -55,10 +65,7 @@ let current = exports.current = (() => {
         return _ref.apply(this, arguments);
     };
 })();
-/**
- * Created by Freax on 16-11-24.
- * @Blog http://www.myfreax.com/
- */
+
 let ls = exports.ls = (() => {
     var _ref2 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* () {
         let registries = yield (0, (_unit || _load_unit()).registerFilter)(function () {
@@ -144,10 +151,12 @@ let add = exports.add = (() => {
 let del = exports.del = (() => {
     var _ref5 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
 
+        registryName = (0, (_unit || _load_unit()).trim)(registryName);
+
         let customRegistries = yield (0, (_unit || _load_unit()).getCustomRegistries)();
 
         let registry = customRegistries.filter(function (registry) {
-            return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
+            return (0, (_unit || _load_unit()).trim)(registry.name) === registryName;
         });
 
         if (registry.length === 0) {
@@ -168,7 +177,9 @@ let del = exports.del = (() => {
             return true;
         }
 
-        customRegistries.splice(customRegistries.indexOf(registry[0], 1));
+        customRegistries.splice((0, (_lodash || _load_lodash()).findIndex)(customRegistries, function (registry) {
+            return registry[(_keys || _load_keys()).NAME] == registryName;
+        }), 1);
 
         let result = yield (0, (_unit || _load_unit()).setCustomRegistry)(customRegistries);
 
