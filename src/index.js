@@ -7,6 +7,7 @@
 
 import program from 'commander'
 import {ls,current,add,use,del} from './actions'
+import {printMsg}from './unit'
 const  pkg = require('./package.json');
 
 
@@ -38,6 +39,12 @@ program
     .command('del <registryName>')
     .description('Delete one custom registry')
     .action(del);
+
+program
+    .command('*')
+    .action(function(command){
+       printMsg(`Error: command ${command} not found`);
+    });
 
 
 program.parse(process.argv);
