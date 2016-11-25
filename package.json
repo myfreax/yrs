@@ -1,6 +1,6 @@
 {
   "name": "yrs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Yarn registry switch tool",
   "keywords": [
     "yarn",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
+    "lodash": "^4.17.2",
     "term-grid": "^0.1.8",
     "user-home": "^2.0.0"
   },
