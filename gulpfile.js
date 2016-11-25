@@ -13,7 +13,7 @@ const path = require('path');
 
 const babelRc = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc'), 'utf8'));
 const SRC = 'src/**/*.js';
-const DST = 'dist/**/*.js';
+const DST = './';
 
 gulp.task('build', ()=> {
     gulp.src(SRC)
@@ -24,7 +24,7 @@ gulp.task('build', ()=> {
         }))
         .pipe(newer(DST))
         .pipe(babel(babelRc))
-        .pipe(gulp.dest('dist/'));
+        .pipe(gulp.dest(DST));
 });
 
 gulp.task('default', ['build']);
