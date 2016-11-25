@@ -3,15 +3,14 @@
  * Created by Freax on 16-11-24.
  * @Blog http://www.myfreax.com/
  */
-import {drawGrid, run, registerFilter, writeFilePromise, trim,isUrl} from './unit'
+import {drawGrid, run, registerFilter, setCustomRegistry, getCustomRegistries, trim, isUrl, printMsg} from './unit'
 import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
-let  registries = require('./registries.json');
 
 
 export let current = async() => {
 
-    let currentRegistry:string = await run(api.current);
+    let currentRegistry: string = await run(api.current);
 
     currentRegistry = trim(currentRegistry);
 
@@ -19,76 +18,74 @@ export let current = async() => {
         drawGrid();
     }
 
-    let currentRegistries = registerFilter(registries, registry => {
+    let currentRegistries: Array<Object> = await registerFilter(registry => {
         return trim(registry[REGISTRY]) === currentRegistry;
     });
-
 
     drawGrid(currentRegistries);
 
     return true;
 };
 
-export let ls = () => {
+export let ls = async() => {
+    let registries: Array<Object> = await registerFilter(() => true);
     drawGrid(registries);
 };
 
 export let use = async(registryName: string) => {
-    let registry = registerFilter(registries, registry => {
+
+    let registry: Array<Object> = await registerFilter(registry => {
         return trim(registry.name) === trim(registryName);
     });
 
     if (registry.length === 0) {
-        console.info(`The registryName ${registryName} is not exists`);
+        printMsg(`The registryName <${registryName}> is not exists`);
         return true;
     }
 
     let message = await run(api.use + ` ${registry[0][REGISTRY]}`);
     console.log(message);
-
     return true;
 };
 
 
 export let add = async(registryName: string, url: string, home: string) => {
 
-    let registry = registerFilter(registries, registry => {
+    let customRegistries: Array<Object> = await getCustomRegistries();
+
+    let registry: Array<Object> = await registerFilter(registry => {
         return trim(registry.name) === trim(registryName);
     });
 
-    let urls = registerFilter(registries, registry => {
+    let urls: Array<Object> = await registerFilter(registry => {
         return trim(registry[REGISTRY]) === trim(url);
     });
 
 
     if (!isUrl(url)) {
-        console.info(`Incorrect registry ${url}`);
+        printMsg(`Incorrect registry <${url}>`);
         return false;
     }
 
     if (urls.length !== 0) {
-        console.info(`The registryUrl ${url} already exists`);
+        printMsg(`The registryUrl <${url}> already exists`);
         return false;
     }
 
     if (registry.length !== 0) {
-        console.info(`The registryName ${registryName} already exists`);
+        printMsg(`The registryName <${registryName}> already exists`);
         return false;
     }
 
-    let temp = {};
-    temp[NAME] = registryName;
-    temp[REGISTRY] = url;
-    temp[HOME] = home;
-    registries.push(temp);
+    let temp = {};temp[NAME] = registryName;temp[REGISTRY] = url;temp[HOME] = home;customRegistries.unshift(temp);
 
-    let result = await writeFilePromise(registries);
-    if (result){
-        ls();
+    let result: boolean = await setCustomRegistry(customRegistries);
+
+    if (result) {
+        printMsg(`Add registry <${registryName}> success`);
         return true;
-    }else{
-        console.info('Failed to add registry');
-        ls();
+    } else {
+        printMsg(`Add registry <${registryName}> failed`);
     }
 
     return true;
@@ -96,37 +93,39 @@ export let add = async(registryName: string, url: string, home: string) => {
 
 export let del = async(registryName: string) => {
 
+    let customRegistries: Array<Object> = await getCustomRegistries();
 
-    let registry = registerFilter(registries, registry => {
+    let registry: Array<Object> = customRegistries.filter((registry)=>{
         return trim(registry.name) === trim(registryName);
     });
 
+
     if (registry.length === 0) {
-        console.info(`The registryName ${registryName} is not exists`);
+        printMsg(`The registryName <${registryName}> is not exists`);
         return true;
     }
 
-    let currentRegistry = await run(api.current);
+    let currentRegistry: string = await run(api.current);
 
     currentRegistry = trim(currentRegistry);
 
-    let currentRegistries = registerFilter(registries, registry => {
+    let currentRegistries: Array<Object> = await registerFilter(registry => {
         return trim(registry[REGISTRY]) === currentRegistry;
     });
 
     if (currentRegistries.length !== 0 && trim(currentRegistries[0][NAME]) === registryName) {
-        console.log(`Registry(${currentRegistry}) is in use, switch other registry can be deleted`);
+        printMsg(`Registry <${currentRegistry}> is in use, switch other registry can be deleted`);
         return true;
     }
 
-    registries.splice(registries.indexOf(registry[0], 1));
+    customRegistries.splice(customRegistries.indexOf(registry[0], 1));
 
-    let result = await writeFilePromise(registries);
+    let result: boolean = await setCustomRegistry(customRegistries);
 
-    if (result){
-        ls();
-    }else{
-        console.info('Failed to del registry!!');
+    if (result) {
+        printMsg(`Delete registry <${registryName}> success`);
+    } else {
+        printMsg(`Delete registry <${registryName}> failed`);
     }
 
     return true;
