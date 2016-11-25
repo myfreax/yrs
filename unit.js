@@ -3,7 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.isUrl = exports.trim = exports.writeFilePromise = exports.registerFilter = exports.run = exports.drawGrid = undefined;
+exports.isUrl = exports.registerFilter = exports.getCustomRegistries = exports.setCustomRegistry = exports.run = exports.drawGrid = exports.printMsg = exports.trim = undefined;
+
+var _asyncToGenerator2;
+
+function _load_asyncToGenerator() {
+    return _asyncToGenerator2 = _interopRequireDefault(require('babel-runtime/helpers/asyncToGenerator'));
+}
 
 var _keys;
 
@@ -35,20 +41,34 @@ function _load_path() {
     return _path = require('path');
 }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _userHome;
+
+function _load_userHome() {
+    return _userHome = _interopRequireDefault(require('user-home'));
+}
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-const savePath = (0, (_path || _load_path()).join)(__dirname, 'registries.json');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Created by Freax on 16-11-22.
  * @Blog http://www.myfreax.com/
  */
-
+const registries = require('./registries.json');
+const savePath = (0, (_path || _load_path()).join)((_userHome || _load_userHome()).default, '.yrs.json');
 
 function isDebug() {
     return process.env.YRS === 'dev';
 }
+
+let trim = exports.trim = str => {
+    return String(str).trim();
+};
+
+let printMsg = exports.printMsg = msg => {
+    console.log(`\n\r ${ trim(msg) } \n\r `);
+};
 
 let drawGrid = exports.drawGrid = function drawGrid() {
     let registries = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -80,43 +100,70 @@ let run = exports.run = command => {
         });
     }).catch(error => {
         if (isDebug()) {
-            console.log(error.stack);
-            return '';
+            throw new Error(error.stack);
         }
         return '';
     });
 };
 
-let registerFilter = exports.registerFilter = (registries, condition) => {
-    return registries.filter(value => {
-        return condition(value);
-    });
-};
-
-let writeFilePromise = exports.writeFilePromise = function writeFilePromise(content) {
+let setCustomRegistry = exports.setCustomRegistry = function setCustomRegistry(content) {
     let path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : savePath;
 
     return new Promise((resolve, reject) => {
         (0, (_fs || _load_fs()).writeFile)(path, JSON.stringify(content), 'utf8', (error, data) => {
             if (error) {
                 reject(error);
+                return undefined;
             }
             resolve(data);
         });
-    }).catch(error => {
-        if (isDebug()) {
-            console.log(error.stack);
-            return false;
-        }
-        return false;
     }).then(() => {
         return true;
+    }).catch(error => {
+        if (isDebug()) {
+            throw new Error(error.stack);
+        }
+        return false;
     });
 };
 
-let trim = exports.trim = str => {
-    return str.toString().trim();
+let getCustomRegistries = exports.getCustomRegistries = function getCustomRegistries() {
+    let path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : savePath;
+
+    return new Promise((resolve, reject) => {
+        (0, (_fs || _load_fs()).readFile)(path, 'utf8', (error, data) => {
+            if (error) {
+                return reject(error);
+            }
+            try {
+                resolve(JSON.parse(data));
+            } catch (e) {
+                resolve([]);
+                if (isDebug()) {
+                    throw new Error(e.stack);
+                }
+            }
+        });
+    }).catch(error => {
+        if (isDebug()) {
+            throw new Error(error.stack);
+        }
+        return [];
+    });
 };
+
+let registerFilter = exports.registerFilter = (() => {
+    var _ref = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (condition) {
+        let customRegistries = yield getCustomRegistries();
+        return customRegistries.concat(registries).filter(function (value) {
+            return condition(value);
+        });
+    });
+
+    return function registerFilter(_x4) {
+        return _ref.apply(this, arguments);
+    };
+})();
 
 let isUrl = exports.isUrl = str => {
     return (/^http|https:\/\/[a-z]+\.[a-z\d]+\.[a-z]+$/i.test(trim(str))

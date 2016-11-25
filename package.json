@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
-    "term-grid": "^0.1.8"
+    "term-grid": "^0.1.8",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

@@ -13,14 +13,19 @@ function _load_actions() {
     return _actions = require('./actions');
 }
 
+var _unit;
+
+function _load_unit() {
+    return _unit = require('./unit');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const pkg = require('./package.json');
 /**
  * Created by Freax on 16-11-22.
  * @Blog http://www.myfreax.com/
  */
-
-const pkg = require('./package.json');
 
 (_commander || _load_commander()).default.version(pkg.version);
 
@@ -33,6 +38,10 @@ const pkg = require('./package.json');
 (_commander || _load_commander()).default.command('add <registryName> <url> [home]').description('Add one custom registry').action((_actions || _load_actions()).add);
 
 (_commander || _load_commander()).default.command('del <registryName>').description('Delete one custom registry').action((_actions || _load_actions()).del);
+
+(_commander || _load_commander()).default.command('*').action(function (command) {
+    (0, (_unit || _load_unit()).printMsg)(`Error: command ${ command } not found`);
+});
 
 (_commander || _load_commander()).default.parse(process.argv);
 

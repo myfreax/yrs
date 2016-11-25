@@ -31,11 +31,6 @@ function _load_api() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-let registries = require('./registries.json');
-/**
- * Created by Freax on 16-11-24.
- * @Blog http://www.myfreax.com/
- */
 let current = exports.current = (() => {
     var _ref = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* () {
 
@@ -47,7 +42,7 @@ let current = exports.current = (() => {
             (0, (_unit || _load_unit()).drawGrid)();
         }
 
-        let currentRegistries = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+        let currentRegistries = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === currentRegistry;
         });
 
@@ -60,91 +55,103 @@ let current = exports.current = (() => {
         return _ref.apply(this, arguments);
     };
 })();
+/**
+ * Created by Freax on 16-11-24.
+ * @Blog http://www.myfreax.com/
+ */
+let ls = exports.ls = (() => {
+    var _ref2 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* () {
+        let registries = yield (0, (_unit || _load_unit()).registerFilter)(function () {
+            return true;
+        });
+        (0, (_unit || _load_unit()).drawGrid)(registries);
+    });
 
-let ls = exports.ls = () => {
-    (0, (_unit || _load_unit()).drawGrid)(registries);
-};
+    return function ls() {
+        return _ref2.apply(this, arguments);
+    };
+})();
 
 let use = exports.use = (() => {
-    var _ref2 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
-        let registry = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+    var _ref3 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
+
+        let registry = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
         });
 
         if (registry.length === 0) {
-            console.info(`The registryName ${ registryName } is not exists`);
+            (0, (_unit || _load_unit()).printMsg)(`The registryName <${ registryName }> is not exists`);
             return true;
         }
 
         let message = yield (0, (_unit || _load_unit()).run)((_api || _load_api()).default.use + ` ${ registry[0][(_keys || _load_keys()).REGISTRY] }`);
         console.log(message);
-
         return true;
     });
 
     return function use(_x) {
-        return _ref2.apply(this, arguments);
+        return _ref3.apply(this, arguments);
     };
 })();
 
 let add = exports.add = (() => {
-    var _ref3 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName, url, home) {
+    var _ref4 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName, url, home) {
 
-        let registry = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+        let customRegistries = yield (0, (_unit || _load_unit()).getCustomRegistries)();
+
+        let registry = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
         });
 
-        let urls = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+        let urls = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === (0, (_unit || _load_unit()).trim)(url);
         });
 
         if (!(0, (_unit || _load_unit()).isUrl)(url)) {
-            console.info(`Incorrect registry ${ url }`);
+            (0, (_unit || _load_unit()).printMsg)(`Incorrect registry <${ url }>`);
             return false;
         }
 
         if (urls.length !== 0) {
-            console.info(`The registryUrl ${ url } already exists`);
+            (0, (_unit || _load_unit()).printMsg)(`The registryUrl <${ url }> already exists`);
             return false;
         }
 
         if (registry.length !== 0) {
-            console.info(`The registryName ${ registryName } already exists`);
+            (0, (_unit || _load_unit()).printMsg)(`The registryName <${ registryName }> already exists`);
             return false;
         }
 
-        let temp = {};
-        temp[(_keys || _load_keys()).NAME] = registryName;
-        temp[(_keys || _load_keys()).REGISTRY] = url;
-        temp[(_keys || _load_keys()).HOME] = home;
-        registries.push(temp);
+        let temp = {};temp[(_keys || _load_keys()).NAME] = registryName;temp[(_keys || _load_keys()).REGISTRY] = url;temp[(_keys || _load_keys()).HOME] = home;customRegistries.unshift(temp);
 
-        let result = yield (0, (_unit || _load_unit()).writeFilePromise)(registries);
+        let result = yield (0, (_unit || _load_unit()).setCustomRegistry)(customRegistries);
+
         if (result) {
-            ls();
+            (0, (_unit || _load_unit()).printMsg)(`Add registry <${ registryName }> success`);
             return true;
         } else {
-            console.info('Failed to add registry');
-            ls();
+            (0, (_unit || _load_unit()).printMsg)(`Add registry <${ registryName }> failed`);
         }
 
         return true;
     });
 
     return function add(_x2, _x3, _x4) {
-        return _ref3.apply(this, arguments);
+        return _ref4.apply(this, arguments);
     };
 })();
 
 let del = exports.del = (() => {
-    var _ref4 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
+    var _ref5 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
 
-        let registry = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+        let customRegistries = yield (0, (_unit || _load_unit()).getCustomRegistries)();
+
+        let registry = customRegistries.filter(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
         });
 
         if (registry.length === 0) {
-            console.info(`The registryName ${ registryName } is not exists`);
+            (0, (_unit || _load_unit()).printMsg)(`The registryName <${ registryName }> is not exists`);
             return true;
         }
 
@@ -152,29 +159,29 @@ let del = exports.del = (() => {
 
         currentRegistry = (0, (_unit || _load_unit()).trim)(currentRegistry);
 
-        let currentRegistries = (0, (_unit || _load_unit()).registerFilter)(registries, function (registry) {
+        let currentRegistries = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === currentRegistry;
         });
 
         if (currentRegistries.length !== 0 && (0, (_unit || _load_unit()).trim)(currentRegistries[0][(_keys || _load_keys()).NAME]) === registryName) {
-            console.log(`Registry(${ currentRegistry }) is in use, switch other registry can be deleted`);
+            (0, (_unit || _load_unit()).printMsg)(`Registry <${ currentRegistry }> is in use, switch other registry can be deleted`);
             return true;
         }
 
-        registries.splice(registries.indexOf(registry[0], 1));
+        customRegistries.splice(customRegistries.indexOf(registry[0], 1));
 
-        let result = yield (0, (_unit || _load_unit()).writeFilePromise)(registries);
+        let result = yield (0, (_unit || _load_unit()).setCustomRegistry)(customRegistries);
 
         if (result) {
-            ls();
+            (0, (_unit || _load_unit()).printMsg)(`Delete registry <${ registryName }> success`);
         } else {
-            console.info('Failed to del registry!!');
+            (0, (_unit || _load_unit()).printMsg)(`Delete registry <${ registryName }> failed`);
         }
 
         return true;
     });
 
     return function del(_x5) {
-        return _ref4.apply(this, arguments);
+        return _ref5.apply(this, arguments);
     };
 })();
