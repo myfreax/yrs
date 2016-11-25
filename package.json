@@ -2,13 +2,25 @@
   "name": "yrs",
   "version": "1.0.0",
   "description": "Yarn registry switch tool",
-  "main": "index.js",
+  "keywords": [
+    "yarn",
+    "registry"
+  ],
   "repository": "git@github.com:huangyanxiong01/yrs.git",
   "author": "Freax <huangyanxiong2013@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "jest"
   },
+  "bin": "./index.js",
+  "files": [
+    "index.js",
+    "actions.js",
+    "index.js",
+    "package.json",
+    "registries.json",
+    "config/*.js"
+  ],
   "jest": {
     "testEnvironment": "node",
     "verbose": true
