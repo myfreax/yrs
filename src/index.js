@@ -7,9 +7,11 @@
 
 import program from 'commander'
 import {ls,current,add,use,del} from './actions'
+const  pkg = require('./package.json');
+
 
 program
-    .version('0.0.1');
+    .version(pkg.version);
 
 program
     .command('current')
@@ -39,3 +41,7 @@ program
 
 
 program.parse(process.argv);
+
+if (process.argv.length === 2) {
+    program.outputHelp();
+}
