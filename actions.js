@@ -52,7 +52,7 @@ let current = exports.current = (() => {
             (0, (_unit || _load_unit()).drawGrid)();
         }
 
-        let currentRegistries = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
+        let currentRegistries = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === currentRegistry;
         });
 
@@ -68,7 +68,7 @@ let current = exports.current = (() => {
 
 let ls = exports.ls = (() => {
     var _ref2 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* () {
-        let registries = yield (0, (_unit || _load_unit()).registerFilter)(function () {
+        let registries = yield (0, (_unit || _load_unit()).registryFilter)(function () {
             return true;
         });
         (0, (_unit || _load_unit()).drawGrid)(registries);
@@ -82,7 +82,7 @@ let ls = exports.ls = (() => {
 let use = exports.use = (() => {
     var _ref3 = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (registryName) {
 
-        let registry = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
+        let registry = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
         });
 
@@ -106,11 +106,11 @@ let add = exports.add = (() => {
 
         let customRegistries = yield (0, (_unit || _load_unit()).getCustomRegistries)();
 
-        let registry = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
+        let registry = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry.name) === (0, (_unit || _load_unit()).trim)(registryName);
         });
 
-        let urls = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
+        let urls = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === (0, (_unit || _load_unit()).trim)(url);
         });
 
@@ -168,7 +168,7 @@ let del = exports.del = (() => {
 
         currentRegistry = (0, (_unit || _load_unit()).trim)(currentRegistry);
 
-        let currentRegistries = yield (0, (_unit || _load_unit()).registerFilter)(function (registry) {
+        let currentRegistries = yield (0, (_unit || _load_unit()).registryFilter)(function (registry) {
             return (0, (_unit || _load_unit()).trim)(registry[(_keys || _load_keys()).REGISTRY]) === currentRegistry;
         });
 

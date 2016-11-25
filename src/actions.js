@@ -3,7 +3,7 @@
  * Created by Freax on 16-11-24.
  * @Blog http://www.myfreax.com/
  */
-import {drawGrid, run, registerFilter, setCustomRegistry, getCustomRegistries, trim, isUrl, printMsg} from './unit'
+import {drawGrid, run, registryFilter, setCustomRegistry, getCustomRegistries, trim, isUrl, printMsg} from './unit'
 import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
 import {findIndex} from 'lodash'
@@ -19,7 +19,7 @@ export let current = async() => {
         drawGrid();
     }
 
-    let currentRegistries: Array<Object> = await registerFilter(registry => {
+    let currentRegistries: Array<Object> = await registryFilter(registry => {
         return trim(registry[REGISTRY]) === currentRegistry;
     });
 
@@ -29,13 +29,13 @@ export let current = async() => {
 };
 
 export let ls = async() => {
-    let registries: Array<Object> = await registerFilter(() => true);
+    let registries: Array<Object> = await registryFilter(() => true);
     drawGrid(registries);
 };
 
 export let use = async(registryName: string) => {
 
-    let registry: Array<Object> = await registerFilter(registry => {
+    let registry: Array<Object> = await registryFilter(registry => {
         return trim(registry.name) === trim(registryName);
     });
 
@@ -54,11 +54,11 @@ export let add = async(registryName: string, url: string, home: string) => {
 
     let customRegistries: Array<Object> = await getCustomRegistries();
 
-    let registry: Array<Object> = await registerFilter(registry => {
+    let registry: Array<Object> = await registryFilter(registry => {
         return trim(registry.name) === trim(registryName);
     });
 
-    let urls: Array<Object> = await registerFilter(registry => {
+    let urls: Array<Object> = await registryFilter(registry => {
         return trim(registry[REGISTRY]) === trim(url);
     });
 
@@ -112,7 +112,7 @@ export let del = async(registryName: string) => {
 
     currentRegistry = trim(currentRegistry);
 
-    let currentRegistries: Array<Object> = await registerFilter(registry => {
+    let currentRegistries: Array<Object> = await registryFilter(registry => {
         return trim(registry[REGISTRY]) === currentRegistry;
     });
 

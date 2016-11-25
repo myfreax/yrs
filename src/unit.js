@@ -100,7 +100,7 @@ export let getCustomRegistries = (path: string = savePath): Promise<*> => {
     });
 };
 
-export let registerFilter = async(condition: any) => {
+export let registryFilter = async(condition: any) => {
     let customRegistries: Array<Object> = await getCustomRegistries();
     return customRegistries.concat(registries).filter(value => {
         return condition(value);

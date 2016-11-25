@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.isUrl = exports.registerFilter = exports.getCustomRegistries = exports.setCustomRegistry = exports.run = exports.drawGrid = exports.printMsg = exports.trim = undefined;
+exports.isUrl = exports.registryFilter = exports.getCustomRegistries = exports.setCustomRegistry = exports.run = exports.drawGrid = exports.printMsg = exports.trim = undefined;
 
 var _asyncToGenerator2;
 
@@ -152,7 +152,7 @@ let getCustomRegistries = exports.getCustomRegistries = function getCustomRegist
     });
 };
 
-let registerFilter = exports.registerFilter = (() => {
+let registryFilter = exports.registryFilter = (() => {
     var _ref = (0, (_asyncToGenerator2 || _load_asyncToGenerator()).default)(function* (condition) {
         let customRegistries = yield getCustomRegistries();
         return customRegistries.concat(registries).filter(function (value) {
@@ -160,7 +160,7 @@ let registerFilter = exports.registerFilter = (() => {
         });
     });
 
-    return function registerFilter(_x4) {
+    return function registryFilter(_x4) {
         return _ref.apply(this, arguments);
     };
 })();
