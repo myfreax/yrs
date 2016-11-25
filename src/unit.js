@@ -69,9 +69,13 @@ export let  writeFilePromise = (content: Array<Object>, path: string = savePath)
         return false;
     }).then(() =>{
         return true;
-    })
+    });
 };
 
 export let trim = (str: string): string => {
     return str.toString().trim();
+};
+
+export let isUrl = (str: string): boolean => {
+    return /^http|https:\/\/[a-z]+\.[a-z\d]+\.[a-z]+$/i.test(trim(str));
 };
