@@ -1,7 +1,14 @@
-# yrs
+# Yrs
+
 >Yarn registry switch tool
 
+
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![npm][npm-license]][npm-url]
+
+
+
 ## Features
+
 Compatible with Node.js 4.0 or higher
 
 ## Requirements
@@ -85,3 +92,10 @@ Done in 0.03s.
    - [Gulp](http://gulpjs.com/)
    - [Jest](https://facebook.github.io/jest/) 
    - [Flow](https://flowtype.org/)
+
+
+
+[downloads-image]: https://img.shields.io/npm/dm/yrs.svg
+[npm-image]: https://img.shields.io/npm/v/yrs.svg
+[npm-license]: https://img.shields.io/npm/l/yrs.svg?style=flat
+[npm-url]: https://github.com/huangyanxiong01/yrs
