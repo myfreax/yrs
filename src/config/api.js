@@ -4,8 +4,8 @@
  * @Blog http://www.myfreax.com/
  */
 type mapString = { [key: string]: string };
-const map: mapString = {
+const api: mapString = {
     current: 'yarn config get registry',
     use: 'yarn config set registry'
 };
-export default map;
+export default api;
