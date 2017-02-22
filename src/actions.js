@@ -8,7 +8,10 @@ import {NAME, HOME, REGISTRY} from './config/keys'
 import api from './config/api'
 import {findIndex} from 'lodash'
 
-
+/**
+ * 获取当前Registry
+ * @returns {Promise.<boolean>}
+ */
 export let current = async() => {
 
     let currentRegistry: string = await run(api.current);
@@ -29,11 +32,21 @@ export let current = async() => {
     return true;
 };
 
+/**
+ * 查看所有注册
+ * @returns {Promise.<boolean>}
+ */
 export let ls = async() => {
     let registries: Array<Object> = await registryFilter(() => true);
     drawGrid(registries);
+    return true;
 };
 
+/**
+ * 设置Registry
+ * @param registryName
+ * @returns {Promise.<boolean>}
+ */
 export let use = async(registryName: string) => {
 
     let registry: Array<Object> = await registryFilter(registry => {
@@ -50,7 +63,13 @@ export let use = async(registryName: string) => {
     return true;
 };
 
-
+/**
+ * 添加Registry
+ * @param registryName
+ * @param url
+ * @param home
+ * @returns {Promise.<boolean>}
+ */
 export let add = async(registryName: string, url: string, home: string) => {
 
     let customRegistries: Array<Object> = await getCustomRegistries();
@@ -97,6 +116,11 @@ export let add = async(registryName: string, url: string, home: string) => {
     return true;
 };
 
+/**
+ * 删除Registry
+ * @param registryName
+ * @returns {Promise.<boolean>}
+ */
 export let del = async(registryName: string) => {
 
     registryName = trim(registryName);
